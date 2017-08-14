@@ -321,7 +321,7 @@ void CMediaShow::UpdateMediaColckTimer()
         AppControl->OnSetMediaClockTimerResponse(RESULT_SUCCESS);
     } else if (jsonObj["params"]["updateMode"].asString() == "CLEAR") {
         emit startMediaClock(false);
-        setMediaClock(false,"");
+        setMediaClock(nowMeidaClockTime.toString("--:--:--"), "");
         AppControl->OnSetMediaClockTimerResponse(RESULT_SUCCESS);
     }
 }

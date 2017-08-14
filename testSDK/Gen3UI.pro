@@ -12,7 +12,7 @@ TEMPLATE = app
 
 DEFINES += HMIUI_LIBRARY __STDC_CONSTANT_MACROS
 
-CONFIG  += wince
+CONFIG  += unix
 
 INCLUDEPATH += $$PWD/ \
                $$PWD/../include
@@ -94,7 +94,7 @@ DEFINES +=WIN32 \
 
 ################################for linux
 unix:!android{
-
+QMAKE_CXXFLAGS_WARN_ON += -Wno-reorder
 }
 
 ################################for wince
