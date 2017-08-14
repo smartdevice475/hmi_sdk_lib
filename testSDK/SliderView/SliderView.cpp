@@ -113,7 +113,7 @@ void CSliderView::showEvent(QShowEvent * e) {
             } else {
                 m_bDynamic = true;
             }
-            for (int i = 0; i < m_jsonData["params"]["sliderFooter"].size(); ++i) {
+            for (size_t i = 0; i < m_jsonData["params"]["sliderFooter"].size(); ++i) {
                 m_FooterStrVec.push_back(m_jsonData["params"]["sliderFooter"][i].asString());
             }
         }

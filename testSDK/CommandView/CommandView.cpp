@@ -88,7 +88,7 @@ void CCommandView::AddSubCommand(int iParentId,int iCmdId,std::string strName,st
     tempCmdInf.iId = iCmdId;
     tempCmdInf.iParentId = iParentId;
     tempCmdInf.strImagePath = strImagePath;
-    for (int i = 0; i != m_CmdVec.size(); ++i) {
+    for (size_t i = 0; i != m_CmdVec.size(); ++i) {
         if (m_CmdVec[i].bMenu && m_CmdVec[i].iId == iParentId) {
             m_CmdVec[i].CmdVec.push_back(tempCmdInf);
             return;
@@ -101,12 +101,12 @@ void CCommandView::RefreshCommandList(tagCmdInf *pMenu)
     m_pCommandList->ClearAllItem();
 
     if (NULL == pMenu) {
-        for (int i = 0;i != m_CmdVec.size();++i) {
+        for (size_t i = 0;i != m_CmdVec.size();++i) {
             m_pCommandList->AddListItem(m_CmdVec[i].strCmd.c_str(),
                                         m_CmdVec[i].bMenu,m_CmdVec[i].strImagePath);
         }
     } else {
-        for (int i = 0;i != pMenu->CmdVec.size();++i) {
+        for (size_t i = 0;i != pMenu->CmdVec.size();++i) {
             // Bug #9677
             m_pCommandList->AddListItem(pMenu->CmdVec[i].strCmd.c_str(),
                                         pMenu->CmdVec[i].bMenu,pMenu->CmdVec[i].strImagePath);

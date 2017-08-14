@@ -108,7 +108,7 @@ void CAppListView::showEvent(QShowEvent * e)
         DeleteChildApp(2);
     }
     if (vAppIDs.size() > 0) {
-        for (int i = 0; i < vAppIDs.size(); ++i) {
+        for (size_t i = 0; i < vAppIDs.size(); ++i) {
             InsertChildApp(2+i,vAppIDs.at(i),
                            vAppNames.at(i).c_str(),
                            vIconPath.at(i).c_str(),

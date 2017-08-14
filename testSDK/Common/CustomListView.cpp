@@ -85,15 +85,15 @@ void CustomListView::SetScrollBarStyle(int iMode)
     }
 }
 
-void CustomListView::UpdateItemShow(int iStartItemIndex)
+void CustomListView::UpdateItemShow(unsigned int iStartItemIndex)
 {
     if (m_iMode == LIST) {
-        for (int i = 0;i != m_ListItemVec.size();++i) {
+        for (size_t i = 0;i != m_ListItemVec.size();++i) {
             ((CCustomButton *)m_ListItemVec[i])->SetSize(0,0);
         }
 
         if (iStartItemIndex < m_pItemShowVec->size()) {
-            for(int i = iStartItemIndex;i != m_pItemShowVec->size();++i) {
+            for(size_t i = iStartItemIndex;i != m_pItemShowVec->size();++i) {
                 ((CCustomButton *)m_pItemShowVec->at(i))->SetSize(m_iItemWidth,m_iItemHeight);
                 m_pItemShowVec->at(i)->setGeometry(0,(i-iStartItemIndex)*(m_iItemHeight+m_iItemSpace),m_iItemWidth,m_iItemHeight);
             }
@@ -101,13 +101,13 @@ void CustomListView::UpdateItemShow(int iStartItemIndex)
 
         UpdateScrollParam(m_pItemShowVec->size());
     } else if (m_iMode == ICON) {
-        for(int i = 0;i != m_ListItemVec.size();++i) {
+        for(size_t i = 0;i != m_ListItemVec.size();++i) {
             m_ListItemVec[i]->hide();
         }
 
         int r = 0,c = 0;
         if (iStartItemIndex < m_pItemShowVec->size()) {
-            for(int i = iStartItemIndex;i != m_pItemShowVec->size();++i) {
+            for(size_t i = iStartItemIndex;i != m_pItemShowVec->size();++i) {
                 r = i / 4;
                 c = i % 4;
                 m_pItemShowVec->at(i)->show();
@@ -176,7 +176,7 @@ void CustomListView::ItemFilter(std::string strKey)
     m_FilterItemVec.clear();
     std::string strText;
     if (!strKey.empty()) {
-        for(int i = 0;i != m_ListItemVec.size();++i) {
+        for(size_t i = 0;i != m_ListItemVec.size();++i) {
             if (m_iMode == LIST) {
                 strText = ((CCustomButton *)m_ListItemVec[i])->Text();
             } else if (m_iMode == ICON) {

@@ -235,7 +235,7 @@ void CMediaShow::showEvent(QShowEvent * e) {
         }
 
         if (jsonParams.isMember("softButtons")) {
-            for (int i = 0; i < jsonParams["softButtons"].size(); ++i) {
+            for (size_t i = 0; i < jsonParams["softButtons"].size(); ++i) {
                 SSoftButton tmpSoftButton;
                 tmpSoftButton.b_isHighlighted = jsonParams["softButtons"][i]["isHighlighted"].asBool();
                 tmpSoftButton.i_softButtonID = jsonParams["softButtons"][i]["softButtonID"].asInt();
