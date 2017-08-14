@@ -199,7 +199,7 @@ void MainWindow::DeleteChildApp(int index)
 
 void MainWindow::showEvent(QShowEvent * e)
 {
-
+    Q_UNUSED(e);
     /*
     std::vector<int> vAppIDs;
     std::vector<std::string> vAppNames;
@@ -220,8 +220,8 @@ void MainWindow::showEvent(QShowEvent * e)
     */
 }
 
-void MainWindow::StartVideoStream(const char* url)
-{
+void MainWindow::StartVideoStream(const char* url) {
+    Q_UNUSED(url);
     //videoWidget->setUrl(url);
     //videoWidget->startStream();
 }

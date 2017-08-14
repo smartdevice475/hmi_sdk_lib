@@ -64,6 +64,7 @@ void CScollMsgView::SetTimeOut(int iDuration)
 
 void CScollMsgView::showEvent(QShowEvent * e)
 {
+    Q_UNUSED(e);
     if (AppControl) {
         AppBase::SetEdlidedText(m_pAppNameLab,AppControl->getAppName().c_str(),width()*0.7);
 

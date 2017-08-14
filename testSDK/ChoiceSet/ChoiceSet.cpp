@@ -68,6 +68,7 @@ CChoiceSet::~CChoiceSet()
 
 void CChoiceSet::showEvent(QShowEvent * e)
 {
+    Q_UNUSED(e);
     if (AppControl) {
         rpcValueInterface& jsonData = AppControl->getInteractionJson();
         rpcValueInterface& jsonChoice= jsonData["Choiceset"]["params"];

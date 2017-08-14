@@ -81,14 +81,14 @@ int CAppButton::getFuncId()
     return m_FuncId;
 }
 
-void CAppButton::mousePressEvent(QMouseEvent *e)
-{
+void CAppButton::mousePressEvent(QMouseEvent *e) {
+    Q_UNUSED(e);
     setActive(true);
     //MenuButton::mousePressEvent(e);
 }
 
-void CAppButton::mouseReleaseEvent(QMouseEvent *e)
-{
+void CAppButton::mouseReleaseEvent(QMouseEvent *e) {
+    Q_UNUSED(e)
     //MenuButton::mouseReleaseEvent(e);
     setActive(false);
     emit clickedWitchFuncId(m_FuncId);

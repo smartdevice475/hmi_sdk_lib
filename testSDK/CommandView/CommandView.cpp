@@ -115,8 +115,8 @@ void CCommandView::RefreshCommandList(tagCmdInf *pMenu)
     m_pCommandList->show();
 }
 
-void CCommandView::showEvent(QShowEvent * e)
-{
+void CCommandView::showEvent(QShowEvent * e) {
+    Q_UNUSED(e);
     //m_pCommandList->SetPos(m_pMenuBtn->geometry().left(),m_pMenuBtn->geometry().top(),m_pMenuBtn->geometry().width()*2.5,0);
     m_CmdVec.clear();
 

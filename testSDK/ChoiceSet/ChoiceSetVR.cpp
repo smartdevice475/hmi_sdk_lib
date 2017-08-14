@@ -51,8 +51,8 @@ CChoiceSetVR::~CChoiceSetVR()
     delete m_pTitleLab;
 }
 
-void CChoiceSetVR::mousePressEvent(QMouseEvent * event)
-{
+void CChoiceSetVR::mousePressEvent(QMouseEvent * event) {
+    Q_UNUSED(event);
     emit pressed();
 }
 

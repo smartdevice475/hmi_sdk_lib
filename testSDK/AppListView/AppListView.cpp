@@ -101,6 +101,7 @@ void CAppListView::showEvent(QShowEvent * e)
     std::vector<int> vAppIDs;
     std::vector<std::string> vAppNames;
     std::vector<std::string> vIconPath;
+    Q_UNUSED(e);
     m_pList->getAppList(vAppIDs, vAppNames,vIconPath);
     int count = m_pChildApps.size();
     for (int i = 2; i < count; ++i) {

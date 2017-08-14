@@ -37,7 +37,9 @@ public: //IMessageInterface
     void onNotification(rpcValueInterface&) {}
     void onResult(rpcValueInterface&) {}
     void onRawData(void * p, int iLength);
-    void onError(std::string error) {}
+    void onError(std::string error) {
+        Q_UNUSED(error);
+    }
 signals:
 
 public slots:

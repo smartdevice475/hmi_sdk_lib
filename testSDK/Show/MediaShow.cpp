@@ -173,8 +173,8 @@ void CMediaShow::SetAppName(QString strName)
     AppBase::SetEdlidedText(m_pAppNameLab,strName,width()*0.5);
 }
 
-void CMediaShow::showEvent(QShowEvent * e)
-{
+void CMediaShow::showEvent(QShowEvent * e) {
+    Q_UNUSED(e);
     for (int i = 0;i != 4;++i) {
         m_aShowLine[i].setText("");
     }
@@ -343,8 +343,8 @@ void CMediaShow::mediaClockSlots(bool isStart)
     SetPlayBtnID(isStart);
 }
 
-void CMediaShow::timerEvent(QTimerEvent *e)
-{
+void CMediaShow::timerEvent(QTimerEvent *e) {
+    Q_UNUSED(e);
     if (m_b_countup) {
         nowMeidaClockTime = nowMeidaClockTime.addSecs(1);
     } else {

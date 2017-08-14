@@ -148,6 +148,8 @@ void CustomCombobox::SetPos(int iStartX,int iStartY,int iWidth,int iHeight)
 
 void CustomCombobox::SetScrollParams(int page,int range)
 {
+    Q_UNUSED(page);
+    Q_UNUSED(range);
     /*
     if (page<=0 || range<=0)
         return;

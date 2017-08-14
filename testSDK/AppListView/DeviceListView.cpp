@@ -104,8 +104,8 @@ void CDeviceListView::ClearDeviceList()
     m_pDevices.clear();
 }
 
-void CDeviceListView::showEvent(QShowEvent * e)
-{
+void CDeviceListView::showEvent(QShowEvent * e) {
+    Q_UNUSED(e);
     ClearDeviceList();
 
     QString appsheet_on[2] = {":/images/phonechild_on.png",

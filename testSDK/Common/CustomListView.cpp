@@ -163,8 +163,8 @@ void CustomListView::OnChoiceSelected(int iIndex)
     emit ItemClicked(iIndex);
 }
 
-void CustomListView::showEvent(QShowEvent * event)
-{    
+void CustomListView::showEvent(QShowEvent * event) {
+    Q_UNUSED(event);
     m_pItemShowVec = &m_ListItemVec;
     if (m_iMode == LIST) {
         UpdateItemShow();

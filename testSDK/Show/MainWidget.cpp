@@ -125,8 +125,8 @@ void MainWidget::setSoftButtons(std::vector<SSoftButton> vec_softButtons)
     }
 }
 
-void MainWidget::showEvent(QShowEvent * e)
-{
+void MainWidget::showEvent(QShowEvent * e) {
+    Q_UNUSED(e);
     for (int i = 0;i != 4;++i) {
         m_pShowLine[i].setText("");
     }
