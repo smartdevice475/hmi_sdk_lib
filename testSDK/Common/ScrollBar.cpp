@@ -3,11 +3,6 @@
 ScrollBar::ScrollBar(QWidget *parent):QScrollBar(parent)
 {
     this->setStyleSheet(ScrollBar::cssString());
-
-//QScrollBar::up-arrow:vertical{ subcontrol-origin: margin; \
-//background-image:url(:/images/uparrow.png);\
-//height:13px;}\
-//QScrollBar::down-arrow:vertical{ background-image:url(:/images/downarrow.png); }
 }
 
 ScrollBar::~ScrollBar()
