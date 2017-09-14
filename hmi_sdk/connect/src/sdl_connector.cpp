@@ -170,16 +170,16 @@ void SDLConnector::OnSoftButtonClick(int id, int mode, std::string strName) {
     _onButtonClickAction(strName, "BUTTONDOWN", id);
     _onButtonClickAction(strName, "BUTTONUP", id);
     if (mode == BUTTON_SHORT)
-      _onButtonClickAction(strName, "SHORT", id);
+		_onButtonClickAction2(strName, "SHORT", id);
     else
-      _onButtonClickAction(strName, "LONG", id);
+		_onButtonClickAction2(strName, "LONG", id);
   } else {
     _onButtonClickAction("CUSTOM_BUTTON", "BUTTONDOWN", id);
     _onButtonClickAction("CUSTOM_BUTTON", "BUTTONUP", id);
     if (mode == BUTTON_SHORT)
-      _onButtonClickAction("CUSTOM_BUTTON", "SHORT", id);
+		_onButtonClickAction2("CUSTOM_BUTTON", "SHORT", id);
     else
-      _onButtonClickAction("CUSTOM_BUTTON", "LONG", id);
+		_onButtonClickAction2("CUSTOM_BUTTON", "LONG", id);
   }
 }
 
@@ -187,9 +187,20 @@ void SDLConnector::_onButtonClickAction(std::string name, std::string mode, int 
   Json::Value params;
   params["name"] = name;
   params["mode"] = mode;
-  params["customButtonID"] = customButtonID;
+  if (0 != customButtonID)
+	params["customButtonID"] = customButtonID;
 
   m_Buttons.sendNotification("Buttons.OnButtonEvent", params);
+}
+
+void SDLConnector::_onButtonClickAction2(std::string name, std::string mode, int customButtonID) {
+	Json::Value params;
+	params["name"] = name;
+	params["mode"] = mode;
+	if (0 != customButtonID)
+		params["customButtonID"] = customButtonID;
+
+	m_Buttons.sendNotification("Buttons.OnButtonPress", params);
 }
 
 void SDLConnector::OnAppExit(int appID) {
@@ -346,20 +357,22 @@ void SDLConnector::OnStartDeviceDiscovery() {
 }
 
 void SDLConnector::OnDeviceChosen(std::string name, std::string id) {
-  Json::Value params;
-  if (!name.empty())
-    params["name"] = name;
-  if (!id.empty())
-    params["id"] = id;
+  Json::Value params, device;
+  if(!name.empty())
+    device["name"] = name;
+  if(!id.empty())
+    device["id"] = id;
+  params["deviceInfo"] = device;
   m_Base.sendNotification("BasicCommunication.OnDeviceChosen", params);
 }
 
 void SDLConnector::OnFindApplications(std::string name, std::string id) {
-  Json::Value params;
-  if (!name.empty())
-    params["name"] = name;
-  if (!id.empty())
-    params["id"] = id;
+  Json::Value params, device;
+  if(!name.empty())
+    device["name"] = name;
+  if(!id.empty())
+    device["id"] = id;
+  params["deviceInfo"] = device;
   m_Base.sendNotification("BasicCommunication.OnFindApplications", params);
 }
 
@@ -471,11 +484,11 @@ void SDLConnector::OnVideoScreenTouch(TOUCH_TYPE touch, int x, int y) {
   Json::Value event;
   Json::Value ts;
   static int id = 0;
-//     [{"c":[{"x":103,"y":247}]
 
+  //此处id值在sdl端会进行判断，取值范围只能是0~9
   switch (touch) {
     case TOUCH_START:
-      id++;
+      //id++;
       params["type"] = "BEGIN";
       event[0]["id"] = id;
       break;
