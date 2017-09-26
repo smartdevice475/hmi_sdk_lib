@@ -1,9 +1,15 @@
 #include <stdio.h>
 #include "gst_player.h"
 
-GstPlayer::GstPlayer(const std::string& file_path, bool sync)
+GstPlayer::GstPlayer()
+    : state_(STATE_NULL) {
+}
+
+GstPlayer::GstPlayer(const std::string& file_path, const std::string& sink, bool sync, guintptr xwinid)
     : file_path_(file_path)
+    , sink_(sink)
     , sync_(sync)
+    , xwinid_(xwinid)
     , state_(STATE_NULL) {
     Init();
 }
@@ -14,6 +20,18 @@ GstPlayer::~GstPlayer() {
     }
 
     Release();
+}
+
+bool GstPlayer::open(const std::string& file_path, const std::string& sink, bool sync, guintptr xwinid) {
+    
+    if (state_ != STATE_NULL) return false;
+    
+    file_path_ = file_path;
+    sink_ = sink;
+    sync_ = sync;
+    xwinid_ = xwinid;
+    
+    return Init();
 }
 
 bool GstPlayer::play() {
@@ -76,7 +94,7 @@ bool GstPlayer::Init() {
     gst_init(NULL, NULL);
     
     // Create pipeline
-    description = std::string("filesrc location=") + file_path_ + std::string(" ! decodebin ! videoconvert ! ximagesink");
+    description = std::string("filesrc location=") + file_path_ + std::string(" ! decodebin ! videoconvert ! ") + sink_;
     if (!sync_) {
         description += std::string(" sync=false");
     }
@@ -88,6 +106,12 @@ bool GstPlayer::Init() {
     // Create main loop
     main_loop_ = g_main_loop_new(NULL, FALSE);
     
+    // Get sink to set display window
+    GstElement *sink = gst_element_factory_make (sink_.c_str(), NULL);
+    if (sink && xwinid_) {
+        gst_video_overlay_set_window_handle (GST_VIDEO_OVERLAY (sink), xwinid_);
+    }
+  
     // Add watch
     gst_bus_add_signal_watch (bus_);
     

@@ -2,6 +2,7 @@
 #define SRC_GST_PLAYER_H
 
 #include <gst/gst.h>
+#include <gst/video/videooverlay.h>
 #include <string>
 
 enum MediaState
@@ -14,9 +15,11 @@ enum MediaState
 
 class GstPlayer {
 public:
-    GstPlayer(const std::string& file_path, bool sync = true);
+    GstPlayer();
+    GstPlayer(const std::string& file_path, const std::string& sink, bool sync = true, guintptr xwinid = 0);
     ~GstPlayer();
     
+    bool open(const std::string& file_path, const std::string& sink, bool sync = true, guintptr xwinid = 0);
     bool play();
     bool pause();
     bool stop();
@@ -30,6 +33,8 @@ private:
     MediaState state_;
     bool sync_;
     std::string file_path_;
+    std::string sink_;
+    guintptr xwinid_;
     
     bool Init();
     bool Release();
