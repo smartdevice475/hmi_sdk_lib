@@ -69,18 +69,13 @@ CeVideoStream::~CeVideoStream()
 
 void CeVideoStream::startStream()
 {
-#ifdef TEST_FILE
-    fp = fopen("./VideoFile.mp4", "ab+");
-#endif
-
-    show();
+    m_player.open("/home/jazz/sdl_bin_x86/storage", "ximagesink", false, this->winId());
+    m_player.play();
 }
 
 void CeVideoStream::stopStream()
 {
-#ifdef TEST_FILE
-    fclose(fp);
-#endif
+    m_player.stop();
 }
 
 #ifdef SDL_CALL_BACK

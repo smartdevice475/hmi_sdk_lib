@@ -10,6 +10,7 @@
 
 #include "Common/Button.h"
 #include "app_list_interface.h"
+#include "gst_player.h"
 #include <QTimer>
 
 #define TEST_FILE
@@ -53,6 +54,7 @@ private:
     QImage *m_pBtnImage[4];
     unsigned char m_ucCurrentImageIndex[2];
 
+    GstPlayer m_player;
     CButton *m_pMenuBtn;
     CButton *m_pZoomInBtn;
     CButton *m_pZoomOutBtn;
