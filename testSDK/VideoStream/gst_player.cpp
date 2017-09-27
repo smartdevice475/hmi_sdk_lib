@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "gst_player.h"
+#include "gst/video/videooverlay.h"
 
 GstPlayer::GstPlayer()
     : state_(STATE_NULL) {
@@ -88,39 +89,53 @@ MediaState GstPlayer::get_state() {
 }
 
 bool GstPlayer::Init() {
-    std::string description;
-    
     // Initialize gstreamer
     gst_init(NULL, NULL);
     
     // Create pipeline
-    description = std::string("filesrc location=") + file_path_ + std::string(" ! decodebin ! videoconvert ! ") + sink_;
-    if (!sync_) {
-        description += std::string(" sync=false");
+    pipeline_ = gst_pipeline_new ("streaming");
+
+    // Create element
+    GstElement* ele_filesrc = gst_element_factory_make("filesrc", "file_source");
+    GstElement* ele_decodebin = gst_element_factory_make("decodebin", "decode_bin");
+    GstElement* ele_videoconvert = gst_element_factory_make("videoconvert", "video_convert");
+    GstElement* ele_videosink = gst_element_factory_make(sink_.c_str(), "video_sink");
+    if (!ele_filesrc || !ele_decodebin || !ele_videoconvert || !ele_videosink) {
+        printf("-- GST: Failed to create element.\n");
+        return false;
     }
-    printf("-- GST: %s\n", description.c_str());
-    pipeline_ = gst_parse_launch(description.c_str(), NULL);
-    
+
+    // Set filesrc location
+    printf("-- GST: location = %s\n", file_path_.c_str());
+    g_object_set(G_OBJECT(ele_filesrc), "location", file_path_.c_str(), NULL);
+
+    // Add element to pipeline
+    gst_bin_add_many(GST_BIN(pipeline_), ele_filesrc, ele_decodebin, ele_videoconvert, ele_videosink, NULL);
+
+    // Link all element in order
+    gst_element_link_many(ele_filesrc, ele_decodebin, ele_videoconvert, ele_videosink, NULL);
+
+    // Set overlay
+    if (ele_videosink && xwinid_) {
+        gst_video_overlay_set_window_handle (GST_VIDEO_OVERLAY (ele_videosink), xwinid_);
+    }
+
     // Get bus
-    bus_ = gst_element_get_bus(pipeline_);
-    
-    // Create main loop
-    main_loop_ = g_main_loop_new(NULL, FALSE);
-    
-    // Get sink to set display window
-    GstElement *sink = gst_element_factory_make (sink_.c_str(), NULL);
-    if (sink && xwinid_) {
-        gst_video_overlay_set_window_handle (GST_VIDEO_OVERLAY (sink), xwinid_);
-    }
-  
-    // Add watch
+    bus_ = gst_pipeline_get_bus(GST_PIPELINE(pipeline_));
+
+    // Add bus to watch
     gst_bus_add_signal_watch (bus_);
-    
+
     // Connect signal
-    g_signal_connect(bus_, "message", G_CALLBACK (bus_callback), this);
-    
+    g_signal_connect(bus_, "message", G_CALLBACK(bus_callback), this);
+
     // Set pipeline ready to play.
-    gst_element_set_state(pipeline_, GST_STATE_READY);
+    GstStateChangeReturn ret = gst_element_set_state(pipeline_, GST_STATE_READY);
+    if (ret == GST_STATE_CHANGE_FAILURE) {
+        printf("-- GST: Failed to set state ready.\n");
+        Release();
+        return false;
+    }
 
     state_ = STATE_READY;
     
@@ -131,10 +146,16 @@ bool GstPlayer::Release() {
     if (state_ == STATE_NULL) {
         return true;
     }
-    g_main_loop_unref (main_loop_);
-    gst_object_unref (bus_);
-    gst_element_set_state (pipeline_, GST_STATE_NULL);
-    gst_object_unref (pipeline_);
+    if (main_loop_) {
+        g_main_loop_unref (main_loop_);
+    }
+    if (bus_) {
+        gst_object_unref (bus_);
+    }
+    if (pipeline_) {
+        gst_element_set_state (pipeline_, GST_STATE_NULL);
+        gst_object_unref (pipeline_);
+    }
     
     state_ = STATE_NULL;
     
@@ -158,4 +179,5 @@ gboolean GstPlayer::bus_callback(GstBus* bus, GstMessage* msg, gpointer data) {
         /* Unhandled message */
         break;
     }
+    return true;
 }
