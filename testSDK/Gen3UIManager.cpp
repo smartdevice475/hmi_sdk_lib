@@ -152,6 +152,8 @@ void CGen3UIManager::initAppHMI()
 
     connect(this,SIGNAL(onAppShowSignal(int)),this,SLOT(AppShowSlot(int)));
     connect(this,SIGNAL(OnAppUnregisterSignal(int)),this,SLOT(OnAppUnregisterSlot(int)));
+    connect(this,SIGNAL(onVideoStartSignal()),this,SLOT(onVideoStartSlots()));
+    connect(this,SIGNAL(onVideoStopSignal()),this,SLOT(onVideoStopSlots()));
 }
 
 void CGen3UIManager::onAppActive()
@@ -182,13 +184,21 @@ void CGen3UIManager::OnAppUnregisterSlot(int appId)
 }
 
 void CGen3UIManager::onVideoStreamStart(){
+    emit onVideoStartSignal();
+}
+
+void CGen3UIManager::onVideoStreamStop(){
+    emit onVideoStopSignal();
+}
+
+void CGen3UIManager::onVideoStartSlots() {
     CeVideoStream* pVideoStream = (CeVideoStream *)m_vUIWidgets[ID_VIDEOSTREAM];
     if (pVideoStream) {
         pVideoStream->startStream();
     }
 }
 
-void CGen3UIManager::onVideoStreamStop(){
+void CGen3UIManager::onVideoStopSlots() {
     CeVideoStream* pVideoStream = (CeVideoStream *)m_vUIWidgets[ID_VIDEOSTREAM];
     if (pVideoStream) {
         pVideoStream->stopStream();

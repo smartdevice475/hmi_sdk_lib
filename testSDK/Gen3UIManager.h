@@ -47,8 +47,8 @@ public slots:
     void AppShowSlot(int type);
     void OnAppUnregisterSlot(int appId);
 
-//    void onVideoStartSlots();
-//    void onVideoStopSlots();
+    void onVideoStartSlots();
+    void onVideoStopSlots();
     void loadsdk();
 private:
     QWidget * m_vUIWidgets[ID_UI_MAX];
