@@ -98,6 +98,7 @@ bool GstPlayer::Init() {
     if (!sync_) {
         description += std::string(" sync=false");
     }
+    printf("-- GST: %s\n", description.c_str());
     pipeline_ = gst_parse_launch(description.c_str(), NULL);
     
     // Get bus

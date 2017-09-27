@@ -55,6 +55,7 @@ SOURCES += \
     SliderView/SliderView.cpp \
     AudioPassThru/AudioPassView.cpp \
     VideoStream/CeVideoStream.cpp \
+    VideoStream/gst_player.cpp \
     AppListView/DeviceListView.cpp
 
 HEADERS += \
@@ -82,6 +83,7 @@ HEADERS += \
     SliderView/SliderView.h \
     AudioPassThru/AudioPassView.h \
     VideoStream/CeVideoStream.h \
+    VideoStream/gst_player.h \
     AppListView/DeviceListView.h
 
 unix {
@@ -91,6 +93,10 @@ unix {
 RESOURCES += \
     image.qrc
 
+LIBS += /usr/lib/x86_64-linux-gnu/libgstreamer-1.0.so \
+        /usr/lib/x86_64-linux-gnu/libgobject-2.0.so   \
+        /usr/lib/x86_64-linux-gnu/libglib-2.0.so      \
+        /usr/lib/x86_64-linux-gnu/libgstvideo-1.0.so
 
 ###############################for windows
 win32:!wince{

@@ -182,11 +182,17 @@ void CGen3UIManager::OnAppUnregisterSlot(int appId)
 }
 
 void CGen3UIManager::onVideoStreamStart(){
-
+    CeVideoStream* pVideoStream = (CeVideoStream *)m_vUIWidgets[ID_VIDEOSTREAM];
+    if (pVideoStream) {
+        pVideoStream->startStream();
+    }
 }
 
 void CGen3UIManager::onVideoStreamStop(){
-
+    CeVideoStream* pVideoStream = (CeVideoStream *)m_vUIWidgets[ID_VIDEOSTREAM];
+    if (pVideoStream) {
+        pVideoStream->stopStream();
+    }
 }
 
 void CGen3UIManager::AppShowSlot(int type)
