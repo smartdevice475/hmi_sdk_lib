@@ -12,16 +12,25 @@ TEMPLATE = app
 
 DEFINES += HMIUI_LIBRARY __STDC_CONSTANT_MACROS
 
-CONFIG  += unix
+CONFIG  += unix armhf
 
 INCLUDEPATH += $$PWD/ \
                $$PWD/../include \
-               $$PWD/../hmi_sdk/gstplayer/include \
-               /usr/include/glib-2.0 \
+               $$PWD/../hmi_sdk/gstplayer/include
+x86 {
+INCLUDEPATH += /usr/include/glib-2.0 \
                /usr/include/gstreamer-1.0 \
                /usr/lib/x86_64-linux-gnu/ \
                /usr/lib/x86_64-linux-gnu/glib-2.0/include \
                /usr/lib/x86_64-linux-gnu/gstreamer-1.0/include
+}
+
+armhf {
+INCLUDEPATH += /usr/arm-linux-gnueabihf/include \
+               /usr/arm-linux-gnueabihf/include/glib-2.0 \
+               /usr/arm-linux-gnueabihf/include/gstreamer-1.0 \
+               /usr/arm-linux-gnueabihf/lib/glib-2.0/include
+}
 
 
 MOC_DIR=temp/moc
@@ -93,10 +102,19 @@ unix {
 RESOURCES += \
     image.qrc
 
+x86 {
 LIBS += /usr/lib/x86_64-linux-gnu/libgstreamer-1.0.so \
         /usr/lib/x86_64-linux-gnu/libgobject-2.0.so   \
         /usr/lib/x86_64-linux-gnu/libglib-2.0.so      \
         /usr/lib/x86_64-linux-gnu/libgstvideo-1.0.so
+}
+
+armhf {
+LIBS += /usr/arm-linux-gnueabihf/lib/libgstreamer-1.0.so \
+        /usr/arm-linux-gnueabihf/lib/libgobject-2.0.so   \
+        /usr/arm-linux-gnueabihf/lib/libglib-2.0.so      \
+        /usr/arm-linux-gnueabihf/lib/libgstvideo-1.0.so
+}
 
 ###############################for windows
 win32:!wince{
