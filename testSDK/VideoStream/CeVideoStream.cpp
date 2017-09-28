@@ -69,7 +69,7 @@ CeVideoStream::~CeVideoStream()
 
 void CeVideoStream::startStream()
 {
-    m_player.open("/home/jerry/temp/sdl_bin_x86/storage/video_stream_pipe", "ximagesink", false, this->winId());
+    m_player.open("./storage/video_stream_pipe", "ximagesink", false, this->parentWidget()->winId());
     m_player.play();
 }
 
