@@ -69,7 +69,7 @@ CeVideoStream::~CeVideoStream()
 
 void CeVideoStream::startStream()
 {
-    m_player.open("./storage/video_stream_pipe", "rkximagesink", false, this->parentWidget()->winId());
+    m_player.open("./storage/video_stream_pipe", "autovideosink", false, this->parentWidget()->winId());
     m_player.play();
 }
 
