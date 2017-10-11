@@ -85,9 +85,6 @@ CeVideoStream::~CeVideoStream()
 
 void CeVideoStream::startStream()
 {
-    MainWindow* pMain = (MainWindow*)this->parentWidget();
-    //this->show();
-    pMain->HideAllComponent();
     m_player.open("./storage/video_stream_pipe", "ximagesink", false, this->winId());
     m_player.play();
     m_pZoomInBtn->show();
@@ -99,12 +96,10 @@ void CeVideoStream::startStream()
 void CeVideoStream::stopStream()
 {
     MainWindow* pMain = (MainWindow*)this->parentWidget();
-    m_player.stop();
-    this->hide();
+    //m_player.stop();
     m_pZoomInBtn->hide();
     m_pZoomOutBtn->hide();
     m_pMenuBtn->hide();
-    pMain->ShowAllComponent();
     if (m_MenuTimer.isActive()) {
         m_MenuTimer.stop();
     }

@@ -176,6 +176,7 @@ void CGen3UIManager::onAppShow(int type)
 void CGen3UIManager::onAppUnregister(int appId)
 {
     emit OnAppUnregisterSignal(appId);
+    emit onVideoStopSignal();
 }
 
 void CGen3UIManager::OnAppUnregisterSlot(int appId)
@@ -192,14 +193,22 @@ void CGen3UIManager::onVideoStreamStop(){
 }
 
 void CGen3UIManager::onVideoStartSlots() {
+    MainWindow * pMain = (MainWindow *)m_vUIWidgets[ID_MAIN];
     CeVideoStream* pVideoStream = (CeVideoStream *)m_vUIWidgets[ID_VIDEOSTREAM];
+    if (pMain) {
+        pMain->HideAllComponent();
+    }
     if (pVideoStream) {
         pVideoStream->startStream();
     }
 }
 
 void CGen3UIManager::onVideoStopSlots() {
+    MainWindow * pMain = (MainWindow *)m_vUIWidgets[ID_MAIN];
     CeVideoStream* pVideoStream = (CeVideoStream *)m_vUIWidgets[ID_VIDEOSTREAM];
+    if (pMain) {
+        pMain->ShowAllComponent();
+    }
     if (pVideoStream) {
         pVideoStream->stopStream();
     }
