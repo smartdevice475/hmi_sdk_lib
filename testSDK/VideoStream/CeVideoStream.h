@@ -6,6 +6,7 @@
 #include <QPainter>
 #include <QQueue>
 #include <QDebug>
+#include <QTimer>
 //#include "message_interface.h"
 
 #include "Common/Button.h"
@@ -45,7 +46,7 @@ signals:
 
 public slots:
     void OnClickedMenuBtn();
-
+    void onMenuShowTimeout();
 private:
     int videoWidth;
     int videoHeight;
@@ -55,6 +56,7 @@ private:
     unsigned char m_ucCurrentImageIndex[2];
 
     GstPlayer m_player;
+    QTimer  m_MenuTimer;
     CButton *m_pMenuBtn;
     CButton *m_pZoomInBtn;
     CButton *m_pZoomOutBtn;
