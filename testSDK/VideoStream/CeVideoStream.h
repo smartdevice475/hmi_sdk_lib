@@ -49,6 +49,8 @@ public: //IMessageInterface
 signals:
 
 public slots:
+    void OnClickedZoomInBtn();
+    void OnClickedZoomOutBtn();
     void OnClickedMenuBtn();
 #ifdef OS_LINUX
     void onMenuShowTimeout();

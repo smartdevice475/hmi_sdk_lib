@@ -151,6 +151,14 @@ void CeVideoStream::onRawData(void *p, int iLength)
 #endif
 }
 
+void CeVideoStream::OnClickedZoomInBtn() {
+
+}
+
+void CeVideoStream::OnClickedZoomOutBtn() {
+
+}
+
 void CeVideoStream::OnClickedMenuBtn()
 {
 #ifdef OS_LINUX
