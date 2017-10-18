@@ -52,6 +52,7 @@ public slots:
     void OnClickedZoomInBtn();
     void OnClickedZoomOutBtn();
     void OnClickedMenuBtn();
+    void onUpdateTime();
 #ifdef OS_LINUX
     void onMenuShowTimeout();
 #endif

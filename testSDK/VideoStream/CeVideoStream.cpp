@@ -167,6 +167,10 @@ void CeVideoStream::OnClickedMenuBtn()
     m_pList->getActiveApp()->OnShowCommand();
 }
 
+void CeVideoStream::onUpdateTime() {
+
+}
+
 void CeVideoStream::mousePressEvent(QMouseEvent *e)
 {
     int x = e->x();
