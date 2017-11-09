@@ -3,8 +3,8 @@
 #include "Common/AppBase.h"
 
 
-#define LISTW 740
-#define LISTH 280
+#define LISTW 1180
+#define LISTH 460
 
 CChoiceSet::CChoiceSet(AppListInterface *pList,QWidget *parent) :
     QWidget(parent),m_iInteractionMode(BOTH),m_pListView(NULL)

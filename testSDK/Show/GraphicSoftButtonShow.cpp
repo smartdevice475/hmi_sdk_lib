@@ -1,8 +1,8 @@
 #include "GraphicSoftButtonShow.h"
 #include <QUrl>
 
-#define MUSICPICWIDTH 770
-#define MUSICPICHEIGHT 210
+#define MUSICPICWIDTH 1200
+#define MUSICPICHEIGHT 380
 
 CGraphicSoftButtonShow::CGraphicSoftButtonShow(AppListInterface *pList, QWidget *parent)
   : QWidget(parent) {
@@ -42,7 +42,7 @@ CGraphicSoftButtonShow::CGraphicSoftButtonShow(AppListInterface *pList, QWidget 
   pTopLayout->setSpacing(5);
 
   pCenterLayout->addWidget(m_pMusicPicLab);
-  pCenterLayout->setContentsMargins(5, 20, 5, 20);
+  pCenterLayout->setContentsMargins(5, 20, 5, 50);
 
   //pBottomLayout->addStretch(1);
   pBottomLayout->addLayout(pBottomCenterLayout);

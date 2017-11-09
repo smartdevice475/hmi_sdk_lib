@@ -1,7 +1,7 @@
 #include "MediaShow.h"
 #include <QUrl>
 
-#define MUSICPICWIDTH 185
+#define MUSICPICWIDTH 300
 #define CMD_PREV 109
 #define CMD_START 1022
 #define CMD_PAUSE 1025
@@ -49,7 +49,7 @@ CMediaShow::CMediaShow(AppListInterface *pList, QWidget *parent)
   pMainLayout->addLayout(pTopLayout);
   pMainLayout->addLayout(pCenterLayout, 1);
   pMainLayout->addLayout(pBottomLayout);
-  pMainLayout->setContentsMargins(10, 20, 10, 10);
+  pMainLayout->setContentsMargins(width() * 0.013, height() * 0.042, width() * 0.013, height() * 0.042);
   pMainLayout->setSpacing(0);
 
   pTopLayout->addWidget(m_pSourceBtn);
@@ -63,14 +63,14 @@ CMediaShow::CMediaShow(AppListInterface *pList, QWidget *parent)
 
   pLeftCenterLayout->addLayout(pTimeShowLayout);
   m_pMusicPB->setParent(this);
-  m_pMusicPB->setGeometry(10, 110, 510, 14);
+  m_pMusicPB->setGeometry(width() * 0.013, height() * 0.25, width() * 0.68, 14);
   //pLeftCenterLayout->addWidget(m_pMusicPB);
   pLeftCenterLayout->addLayout(pStringsLayout);
-  pStringsLayout->setContentsMargins(0, 32, 0, 10);
+  pStringsLayout->setContentsMargins(0, 34, 0, 10);
   for (int i = 0; i != 5; ++i) {
     pStringsLayout->addWidget(m_aShowLine + i);
-    m_aShowLine[i].setStyleSheet("border:0px;font: 20px \"Liberation Serif\";color:rgb(0,0,0)");
-    m_aShowLine[i].setFixedHeight(27);
+    m_aShowLine[i].setStyleSheet("border:0px;font: 32px \"Liberation Serif\";color:rgb(0,0,0)");
+    m_aShowLine[i].setFixedHeight(45);
   }
   //pLeftCenterLayout->addStretch(1);
   pLeftCenterLayout->setContentsMargins(0, 10, 65, 10);
@@ -83,7 +83,7 @@ CMediaShow::CMediaShow(AppListInterface *pList, QWidget *parent)
   //pBottomLayout->addStretch(1);
   pBottomLayout->addLayout(pBottomCenterLayout);
   pBottomLayout->addStretch(1);
-  pBottomLayout->setSpacing(0);
+  pBottomLayout->setContentsMargins(0, 50, 0, 10);
   pBottomCenterLayout->addLayout(m_pBtnLayout);
   pBottomCenterLayout->addWidget(m_pShadowLab);
   pBottomCenterLayout->addStretch(1);

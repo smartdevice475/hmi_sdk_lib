@@ -17,8 +17,8 @@ CustomListView::CustomListView(int iWidth,int iHeight,int iMode,QWidget *parent)
 
         InitScroll();
     } else if (iMode == ICON) {
-        m_iItemWidth = 185;
-        m_iItemHeight = 140;
+        m_iItemWidth = iWidth*0.25;
+        m_iItemHeight = iHeight*0.5;
     }
 }
 
@@ -42,8 +42,8 @@ void CustomListView::AddItem(std::string strText,int iId,std::string strIconPath
         CAppButton *pNewItem = new CAppButton(this);
         int r = m_ListItemVec.size()/4;
         int c = m_ListItemVec.size()%4;
-        pNewItem->setGeometry(5 + m_iItemWidth*c, 5 + m_iItemHeight*r,
-                              m_iItemWidth - 40, m_iItemHeight - 15);
+        pNewItem->setGeometry(40 + m_iItemWidth*c, 20 + m_iItemHeight*r,
+                              m_iItemWidth - 60, m_iItemHeight - 20);
         pNewItem->setFuncId(iId);
         pNewItem->setIcon(strIconPath.c_str(),strIconPath.c_str(),true);
         pNewItem->setText(strText.c_str());
@@ -113,10 +113,10 @@ void CustomListView::UpdateItemShow(unsigned int iStartItemIndex)
                 r = (i / 4)%2;
                 c = i % 4;
                 m_pItemShowVec->at(i)->show();
-                m_pItemShowVec->at(i)->setGeometry(5 + m_iItemWidth*c,
-                                                   5 + m_iItemHeight*r,
-                                                   m_iItemWidth-40,
-                                                   m_iItemHeight-15);
+                m_pItemShowVec->at(i)->setGeometry(40 + m_iItemWidth*c,
+                                                   20 + m_iItemHeight*r,
+                                                   m_iItemWidth-60,
+                                                   m_iItemHeight-20);
             }
         }
     }
