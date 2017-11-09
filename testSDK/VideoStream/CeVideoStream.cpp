@@ -4,14 +4,22 @@
 #include "MainWindow/MainWindow.h"
 
 CeVideoStream::CeVideoStream(AppListInterface * pList, QWidget *parent) : QWidget(parent)
-  ,videoWidth(SCREEN_WIDTH),videoHeight(SCREEN_HEIGHT)
+  ,videoWidth(SCREEN_WIDTH),videoHeight(SCREEN_HEIGHT),m_ClickStatus(false)
 {
     setWindowFlags(Qt::FramelessWindowHint);
     if (parent) {
+#if (SCREEN_WIDTH == 800) && (SCREEN_HEIGHT == 480)
 #ifdef ARCH_X86
         setGeometry(80, 0, parent->width() - 90, parent->height() - 80);
 #elif ARCH_ARMHF
         setGeometry(80, 0, parent->width() - 90, parent->height() - 90);
+#endif
+#elif ((SCREEN_WIDTH == 1280) && (SCREEN_HEIGHT == 800))
+#ifdef ARCH_X86
+        setGeometry(120, 0, parent->width() - 130, parent->height()*0.75);
+#elif ARCH_ARMHF
+        setGeometry(120, 0, parent->width() - 130, parent->height()*0.75);
+#endif
 #endif
     }
 
@@ -33,7 +41,7 @@ CeVideoStream::CeVideoStream(AppListInterface * pList, QWidget *parent) : QWidge
     m_pZoomInBtn = new CButton(this);
     m_pZoomOutBtn = new CButton(this);
 
-
+#if (SCREEN_WIDTH == 800) && (SCREEN_HEIGHT == 480)
     int iBtnHeight = 40;
     int iBtnWidth = 60;
 
@@ -52,7 +60,26 @@ CeVideoStream::CeVideoStream(AppListInterface * pList, QWidget *parent) : QWidge
                               ":/images/BtnNormal.png",
                               ":/images/BtnPress.png","","Menu");
     m_pMenuBtn->setTextStyle("border:0px;font: 20px \"Liberation Serif\";color:rgb(0,0,0)");
+#elif ((SCREEN_WIDTH == 1280) && (SCREEN_HEIGHT == 800))
+    int iBtnHeight = 60;
+    int iBtnWidth = 90;
 
+    m_pZoomInBtn->setGeometry(QRect(10,height()*0.3-10,iBtnWidth,iBtnHeight));
+    m_pZoomInBtn->initParameter(iBtnWidth,iBtnHeight,
+                                ":/images/ZoomInBtnNormal.png",
+                                ":/images/ZoomInBtnPress.png","","");
+
+    m_pZoomOutBtn->setGeometry(QRect(10,height()*0.3+iBtnHeight+10,iBtnWidth,iBtnHeight));
+    m_pZoomOutBtn->initParameter(iBtnWidth,iBtnHeight,
+                                 ":/images/ZoomOutBtnNormal.png",
+                                 ":/images/ZoomOutBtnPress.png","","");
+
+    m_pMenuBtn->setGeometry(QRect(10,height()*0.8,iBtnWidth,iBtnHeight));
+    m_pMenuBtn->initParameter(iBtnWidth,iBtnHeight,
+                              ":/images/BtnNormal.png",
+                              ":/images/BtnPress.png","","Menu");
+    m_pMenuBtn->setTextStyle("border:0px;font: 20px \"Liberation Serif\";color:rgb(0,0,0)");
+#endif
     m_pZoomInBtn->setParent(parent);
     m_pZoomOutBtn->setParent(parent);
     m_pMenuBtn->setParent(parent);
@@ -91,7 +118,9 @@ void CeVideoStream::startStream()
     MainWindow* pMain = (MainWindow*)this->parentWidget();
     if (pMain) {
         pMain->HideAllComponent();
+        pMain->HideMenuBar();
     }
+    setGeometry(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 #ifdef ARCH_X86
     m_player.open("./storage/video_stream_pipe", "ximagesink", false, this->winId());
 #elif ARCH_ARMHF
@@ -131,7 +160,7 @@ void CeVideoStream::onMenuShowTimeout() {
     m_pZoomOutBtn->hide();
     m_pMenuBtn->hide();
     pMain->HideMenuBar();
-    setGeometry(0, 0, parentWidget()->width(), parentWidget()->height());
+    setGeometry(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 }
 #endif
 
@@ -173,20 +202,12 @@ void CeVideoStream::mousePressEvent(QMouseEvent *e)
     int y = e->y();
     x = x*videoWidth/width();
     y = y*videoHeight/height();
+#if (SCREEN_WIDTH == 800) && (SCREEN_HEIGHT == 480)
     AppControl->OnVideoScreenTouch(TOUCH_START,x,y);
-#ifdef OS_LINUX
-    m_MenuTimer.start();
-    MainWindow* pMain = (MainWindow*)this->parentWidget();
-    m_pZoomInBtn->show();
-    m_pZoomOutBtn->show();
-    m_pMenuBtn->show();
-    pMain->ShowMenuBar();
-#ifdef ARCH_X86
-    setGeometry(80, 0, parentWidget()->width() - 90, parentWidget()->height() - 80);
-#elif ARCH_ARMHF
-    setGeometry(80, 0, parentWidget()->width() - 90, parentWidget()->height() - 90);
+#elif ((SCREEN_WIDTH == 1280) && (SCREEN_HEIGHT == 800))
+    AppControl->OnVideoScreenTouch(TOUCH_START,x*800/1280,y*480/800);
 #endif
-#endif
+    m_ClickStatus = true;
 }
 
 void CeVideoStream::mouseMoveEvent(QMouseEvent *e)
@@ -196,7 +217,12 @@ void CeVideoStream::mouseMoveEvent(QMouseEvent *e)
     x = x*videoWidth/width();
     y = y*videoHeight/height();
 
+#if (SCREEN_WIDTH == 800) && (SCREEN_HEIGHT == 480)
     AppControl->OnVideoScreenTouch(TOUCH_MOVE,x,y);
+#elif ((SCREEN_WIDTH == 1280) && (SCREEN_HEIGHT == 800))
+    AppControl->OnVideoScreenTouch(TOUCH_MOVE,x*800/1280,y*480/800);
+#endif
+    m_ClickStatus = false;
 }
 
 #define ZOOMINBTNID 3
@@ -209,5 +235,33 @@ void CeVideoStream::mouseReleaseEvent(QMouseEvent *e)
     x = x*videoWidth/width();
     y = y*videoHeight/height();
 
+#if (SCREEN_WIDTH == 800) && (SCREEN_HEIGHT == 480)
     AppControl->OnVideoScreenTouch(TOUCH_END,x,y);
+#elif ((SCREEN_WIDTH == 1280) && (SCREEN_HEIGHT == 800))
+    AppControl->OnVideoScreenTouch(TOUCH_END,x*800/1280,y*480/800);
+#endif
+    if (m_ClickStatus) {
+#ifdef OS_LINUX
+      m_MenuTimer.start();
+      MainWindow* pMain = (MainWindow*)this->parentWidget();
+      m_pZoomInBtn->show();
+      m_pZoomOutBtn->show();
+      m_pMenuBtn->show();
+      pMain->ShowMenuBar();
+#if (SCREEN_WIDTH == 800) && (SCREEN_HEIGHT == 480)
+#ifdef ARCH_X86
+      setGeometry(80, 0, parentWidget()->width() - 90, parentWidget()->height() - 80);
+#elif ARCH_ARMHF
+      setGeometry(80, 0, parentWidget()->width() - 90, parentWidget()->height() - 90);
+#endif
+#elif ((SCREEN_WIDTH == 1280) && (SCREEN_HEIGHT == 800))
+#ifdef ARCH_X86
+        setGeometry(120, 0, parentWidget()->width() - 130, parentWidget()->height()*0.75);
+#elif ARCH_ARMHF
+        setGeometry(120, 0, parentWidget()->width() - 130, parentWidget()->height()*0.75);
+#endif
+#endif
+      m_ClickStatus = false;
+#endif
+    }
 }
