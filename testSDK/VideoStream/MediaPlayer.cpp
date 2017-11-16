@@ -10,7 +10,8 @@ MediaPlayer::MediaPlayer(QObject *parent) : QThread(parent),
     msg_bus_(NULL),
     pipeline_(NULL),
     videosink_(NULL),
-    mainloop_(NULL) {
+    mainloop_(NULL),
+    isActive_(false) {
 
 }
 
@@ -19,6 +20,7 @@ MediaPlayer::~MediaPlayer() {
 }
 
 bool MediaPlayer::start() {
+    printf("-- MediaPlayer::start\n");
     if (pipe_name_.empty()) {
         return false;
     }
@@ -27,30 +29,43 @@ bool MediaPlayer::start() {
     }
     QThread::start();
 
+    isActive_ = true;
+
     return true;
 }
 
 bool MediaPlayer::stop() {
-    gst_element_set_state(pipeline_, GST_STATE_READY);
+    printf("-- MediaPlayer::stop\n");
+//    gst_element_set_state(pipeline_, GST_STATE_READY);
     g_main_loop_quit(mainloop_);
+
+    isActive_ = false;
 
     return true;
 }
 
 void MediaPlayer::setPipeName(std::string pipe_name) {
+    printf("-- MediaPlayer::setPipeName = %s\n", pipe_name.c_str());
     pipe_name_ = pipe_name;
 }
 
 void MediaPlayer::setVideoSink(std::string sink_name) {
+    printf("-- MediaPlayer::setVideoSink = %s\n", sink_name.c_str());
     sink_name_ = sink_name;
 }
 
 void MediaPlayer::setSyncFlag(gboolean sync_flag) {
+    printf("-- MediaPlayer::setSyncFlag = %s\n", sync_flag ? "true" : "false");
     sync_flag_ = sync_flag;
 }
 
 void MediaPlayer::setWindowHandle(guintptr xwinid) {
+    printf("-- MediaPlayer::setWindowHandle = %zu\n", xwinid);
     xwinid_ = xwinid;
+}
+
+bool MediaPlayer::isActive() {
+    return isActive_;
 }
 
 void MediaPlayer::run() {
@@ -79,7 +94,7 @@ void MediaPlayer::run() {
     }
 
     // Add watch
-    gst_bus_add_signal_watch (msg_bus_);
+    gst_bus_add_signal_watch(msg_bus_);
 
     // Connect signal
     g_signal_connect(msg_bus_, "message", G_CALLBACK(bus_callback), this);
@@ -105,6 +120,7 @@ gboolean MediaPlayer::bus_callback(GstBus* bus, GstMessage* msg, gpointer data) 
   MediaPlayer* media = (MediaPlayer*)data;
 
   bus = bus; // Avoid warning: -Wunused-parameter
+  printf("-- MSG: GST_MESSAGE_TYPE = %d\n", GST_MESSAGE_TYPE (msg));
   switch (GST_MESSAGE_TYPE (msg)) {
   case GST_MESSAGE_ERROR: {
     printf("-- MSG: ERROR\n");

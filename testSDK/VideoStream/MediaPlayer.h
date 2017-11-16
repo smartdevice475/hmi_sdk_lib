@@ -19,6 +19,8 @@ public:
     void setVideoSink(std::string sink_name);
     void setSyncFlag(gboolean sync_flag);
     void setWindowHandle(guintptr xwinid);
+
+    bool isActive();
 signals:
 
 public slots:
@@ -34,6 +36,7 @@ private:
     GstElement* pipeline_;
     GstElement* videosink_;
     GMainLoop*  mainloop_;
+    bool        isActive_;
 
     void run();
 

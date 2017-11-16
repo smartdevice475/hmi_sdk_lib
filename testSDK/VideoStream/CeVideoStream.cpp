@@ -92,17 +92,22 @@ void CeVideoStream::startStream()
         pMain->HideAllComponent();
     }
 #ifdef ARCH_X86
-    m_player.setPipeName("./storage/video_stream_pipe");
-    m_player.setVideoSink("ximagesink");
-    m_player.setSyncFlag(false);
-    m_player.setWindowHandle(this->winId());
+    if (!m_player.isActive()) {
+        m_player.setPipeName("./storage/video_stream_pipe");
+        m_player.setVideoSink("ximagesink");
+        m_player.setSyncFlag(false);
+        m_player.setWindowHandle(this->winId());
+        m_player.start();
+    }
 #elif ARCH_ARMHF
-    m_player.setPipeName("./storage/video_stream_pipe");
-    m_player.setVideoSink("rkximagesink");
-    m_player.setSyncFlag(false);
-    m_player.setWindowHandle(this->winId());
+    if (!m_player.isActive()) {
+        m_player.setPipeName("./storage/video_stream_pipe");
+        m_player.setVideoSink("rkximagesink");
+        m_player.setSyncFlag(false);
+        m_player.setWindowHandle(this->winId());
+        m_player.start();
+    }
 #endif
-    m_player.start();
     m_pZoomInBtn->show();
     m_pZoomOutBtn->show();
     m_pMenuBtn->show();
@@ -114,7 +119,7 @@ void CeVideoStream::stopStream()
 {
 #ifdef OS_LINUX
     MainWindow* pMain = (MainWindow*)this->parentWidget();
-//    m_player.stop();
+    m_player.stop();
     m_pZoomInBtn->hide();
     m_pZoomOutBtn->hide();
     m_pMenuBtn->hide();
