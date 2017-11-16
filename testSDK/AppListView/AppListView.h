@@ -21,7 +21,7 @@ public:
 protected:
     virtual void showEvent(QShowEvent * e);
 private:
-    void UpdateItemShow(unsigned int iStartItemIndex = 0);
+    void UpdateItemShow(int iStartItemIndex = 0);
 
 signals:
 

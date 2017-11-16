@@ -3,8 +3,7 @@
 #include "Common/AppBase.h"
 #include "MainWindow/MainWindow.h"
 
-CeVideoStream::CeVideoStream(AppListInterface * pList, QWidget *parent) : QWidget(parent)
-  ,videoWidth(SCREEN_WIDTH),videoHeight(SCREEN_HEIGHT)
+CeVideoStream::CeVideoStream(AppListInterface * pList, QWidget *parent) : QWidget(parent), m_player(parent)
 {
     setWindowFlags(Qt::FramelessWindowHint);
     if (parent) {
@@ -93,11 +92,17 @@ void CeVideoStream::startStream()
         pMain->HideAllComponent();
     }
 #ifdef ARCH_X86
-    m_player.open("./storage/video_stream_pipe", "ximagesink", false, this->winId());
+    m_player.setPipeName("./storage/video_stream_pipe");
+    m_player.setVideoSink("ximagesink");
+    m_player.setSyncFlag(false);
+    m_player.setWindowHandle(this->winId());
 #elif ARCH_ARMHF
-    m_player.open("./storage/video_stream_pipe", "rkximagesink", false, this->winId());
+    m_player.setPipeName("./storage/video_stream_pipe");
+    m_player.setVideoSink("rkximagesink");
+    m_player.setSyncFlag(false);
+    m_player.setWindowHandle(this->winId());
 #endif
-    m_player.play();
+    m_player.start();
     m_pZoomInBtn->show();
     m_pZoomOutBtn->show();
     m_pMenuBtn->show();
@@ -109,7 +114,7 @@ void CeVideoStream::stopStream()
 {
 #ifdef OS_LINUX
     MainWindow* pMain = (MainWindow*)this->parentWidget();
-    //m_player.stop();
+//    m_player.stop();
     m_pZoomInBtn->hide();
     m_pZoomOutBtn->hide();
     m_pMenuBtn->hide();

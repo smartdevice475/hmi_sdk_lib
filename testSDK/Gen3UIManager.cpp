@@ -136,11 +136,6 @@ void CGen3UIManager::onAppUnregister(int appId) {
 }
 
 void CGen3UIManager::OnAppUnregisterSlot(int appId) {
-  AppDataInterface *pData = AppControl;
-  if (pData && appId == pData->getAppID()) {
-    // App异常退出提示框
-    QMessageBox::about(this, "通知", QString(pData->getAppName().c_str()) + "App异常断开!");
-  }
   m_pList->appUnregistered(appId);
 }
 

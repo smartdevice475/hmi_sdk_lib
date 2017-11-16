@@ -13,7 +13,7 @@ TEMPLATE = app
 DEFINES += HMIUI_LIBRARY __STDC_CONSTANT_MACROS
 
 #CONFIG  += wince
-#CONFIG  += unix x86
+CONFIG  += unix armhf
 
 INCLUDEPATH += $$PWD/ \
                $$PWD/../include \
@@ -72,10 +72,11 @@ SOURCES += \
     AppListView/DeviceListView.cpp \
     Template/TemplateImp.cpp \
     Template/TemplateManager.cpp \
-    Show/GraphicSoftButtonShow.cpp
+    Show/GraphicSoftButtonShow.cpp \
+    VideoStream/MediaPlayer.cpp
 
 unix {
-    SOURCES += VideoStream/gst_player.cpp
+    SOURCES +=
 }
 
 HEADERS += \
@@ -107,10 +108,11 @@ HEADERS += \
     Library/android/sdl/main.h \
     Template/TemplateImp.h \
     Template/TemplateManager.h \
-    Show/GraphicSoftButtonShow.h
+    Show/GraphicSoftButtonShow.h \
+    VideoStream/MediaPlayer.h
 
 unix {
-    SOURCES += VideoStream/gst_player.h
+    SOURCES +=
 }
 
 unix {

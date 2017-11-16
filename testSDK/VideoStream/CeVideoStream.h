@@ -14,7 +14,7 @@
 #include "Common/Button.h"
 #include "app_list_interface.h"
 #ifdef OS_LINUX
-#include "gst_player.h"
+#include "MediaPlayer.h"
 #endif
 #include <QTimer>
 
@@ -63,7 +63,7 @@ private:
     unsigned char m_ucCurrentImageIndex[2];
 
 #ifdef OS_LINUX
-    GstPlayer m_player;
+    MediaPlayer m_player;
     QTimer  m_MenuTimer;
 #endif
     CButton *m_pMenuBtn;

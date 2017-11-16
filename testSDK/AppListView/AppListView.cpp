@@ -126,15 +126,15 @@ void CAppListView::showEvent(QShowEvent * e)
     UpdateItemShow(0);
 }
 
-void CAppListView::UpdateItemShow(unsigned int iStartItemIndex)
+void CAppListView::UpdateItemShow(int iStartItemIndex)
 {
-    for(unsigned int i = 0;i != m_pChildApps.size();++i) {
+    for(int i = 0;i != m_pChildApps.size();++i) {
         m_pChildApps[i]->hide();
     }
 
     int r = 0,c = 0;
     if (iStartItemIndex < m_pChildApps.size()) {
-        for(unsigned int i = iStartItemIndex;i != m_pChildApps.size() && i < ICON_PAGE+iStartItemIndex;++i) {
+        for(int i = iStartItemIndex;i != m_pChildApps.size() && i < ICON_PAGE+iStartItemIndex;++i) {
             r = (i / 4)%2;
             c = i % 4;
             m_pChildApps[i]->show();
